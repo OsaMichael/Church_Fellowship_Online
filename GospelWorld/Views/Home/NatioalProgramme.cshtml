@@ -1,0 +1,49 @@
+﻿
+@using GospelWorld.Models;
+@model GospelWorld.Models.DeptListViewModel
+@{
+    ViewBag.Title = "National Programme";
+    Layout = "~/Views/Shared/GalleryLayout.cshtml";
+}
+
+<section class="hero-area">
+    <div class="hero-slides owl-carousel">
+
+        @foreach (var item in Model.Events)
+        {
+            <div class="single-hero-slide bg-img bg-overlay" style="background-image:url(@Url.Content("~/Content/images/")@item.EventImageThumbnailUrl);">
+
+                <div class="container h-100">
+                    <div class="row h-100 align-items-center justify-content-end">
+                        <div class="col-12 col-lg-7">
+
+                            <div class="hero-slides-content">
+                                <h6 class="date" data-animation="fadeInUp" data-delay="100ms">@item.EventDate.Day/ @item.EventDate.Month/ @item.EventDate.Year</h6>
+                                <h3 data-animation="fadeInUp" data-delay="300ms">@item.EventName</h3>
+                                <h2 data-animation="fadeInUp" data-delay="500ms">@item.EventLocation</h2>
+                                <p data-animation="fadeInUp" data-delay="700ms">@Html.Raw(item.EventDescription)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-event-btn" data-animation="bounceInDown" data-delay="900ms">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <a href="#" class="btn faith-btn active">Sunday Worship: 8:30 AM</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+
+<a href="#." class="go-top text-center"><i class="fa fa-angle-double-up"></i></a>
+
+
+
+

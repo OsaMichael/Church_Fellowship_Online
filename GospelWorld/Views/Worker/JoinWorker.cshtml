@@ -1,0 +1,46 @@
+﻿@model GospelWorld.Models.WorkerModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Join Us";
+}
+
+<div class="breadcumb-area bg-img" style="background-image: url(~/Content/img/bg-img/bg-6.jpg);">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12 col-md-6">
+                <div class="breadcumb-text">
+                    <h5>Join the work force</h5>
+
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-12 col-lg-6">
+    <div class="contact-form-area">
+
+        @using (Html.BeginForm("JoinWorker", "Worker", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <hr />
+            @*<input type="hidden" name="WorkId" value="@Model.WorkId" />*@
+            @Html.HiddenFor(model => model.WorkId)
+            <input type="text" class="form-control" name="FirstName" placeholder="Surname" required />
+            <input type="text" class="form-control" name="LastName" placeholder="First Name" required />
+            <input type="text" class="form-control" name="PhoneNumber" placeholder="Phone Number" required />
+            <input type="email" class="form-control" name="email" placeholder="E-mail" />
+            <input type="text" class="form-control" name="Address" placeholder="House Address" required />
+            <input type="file" name="ImageFile" class="imgInp form-control" accept=".png,.jpg,.jpeg,.gif,.tif" required placeholder="Upload Picture" />
+
+
+            @Html.DropDownListFor(model => model.DeptId, (IEnumerable<SelectListItem>)ViewBag.Department, "Select a department", new { })
+
+
+            <textarea name="message" class="form-control" cols="30" rows="10" placeholder="Message"></textarea>
+            <input type="submit" value="Save" class="btn btn-default" />
+        }
+    </div>
+</div>

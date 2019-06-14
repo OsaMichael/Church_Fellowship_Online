@@ -1,0 +1,154 @@
+﻿
+@model GospelWorld.Models.SermonViewModel
+@{
+    ViewBag.Title = "";
+
+}
+
+
+<div class="breadcumb-area bg-img" style="background-image: url(~/Content/img/bg-img/bg-6.jpg);">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12 col-md-6">
+                <div class="breadcumb-text">
+                    <h5>Live from church</h5>
+                    <h2>Sermons</h2>
+                    <p>Cras iaculis eleifend arcu, non cursus sem. Morbi viverra varius nisl, ac varius mauris interdum sit amet. Aenean ac fermentum neque.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="sermons-area section-padding-100-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading text-center mx-auto">
+                    <img src="~/Content/img/core-img/cross.png" alt="">
+                    <h3>The Sermons</h3>
+                    <p>Donec quis metus ac arcu luctus accumsan. Nunc in justo tincidunt, sodales nunc id, finibus nibh.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-6 mb-100">
+
+
+
+                @foreach (var item in Model.SermonCategorss)
+                {
+                    <div class="single-sermons style-2">
+                        <div class="sermons-content">
+
+                            <div class="sermons-thumbnail bg-img" style="background-image: url(~/Content/img/bg-img/ser9.jpg);"></div>
+
+                            <div class="sermons-text">
+                                @Html.ActionLink(item.SermonName, "SermonsbyCategory", "Sermon", new { name = item.SermonName }, new { @class = "" })
+
+
+                                <p>@item.SermonDescription</p>
+                            </div>
+                        </div>
+
+                        <div class="sermons-audio-player d-flex align-items-center">
+                            <audio preload="auto" controls>
+                                <source src="~/Content/audio/dummy-audio.mp3">
+                            </audio>
+                            <div class="see-more-btn">
+                                <a href="@Url.Action("SermonDetails","Sermon", new { id = item.CatId } )">See More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+            <div class="col-12 col-lg-6 mb-100">
+
+                @foreach (var sermon in Model.Sermons)
+                {
+                    <div class="single-sermons">
+                        <div class="sermons-content d-flex align-items-center">
+
+                            <div class="sermons-thumbnail bg-img">
+                                <img src="~/Content/img/blog-img/3.jpg" alt="">
+                                @*<img src="@Url.Content("~/Content/Images/")@sermon.ImageThumbnailUrl" alt="preacher :@sermon.PreacherName" />*@
+                            </div>
+
+                            <div class="sermons-text">
+                                <a href="@Url.Action("SermonDetails","Sermon", new { id = sermon.CatId } )">
+
+                                    <h6>@sermon.SermonTitle</h6>
+                                </a>
+                                <p>by @sermon.PreacherName</p>
+                                <p class="date"> @sermon.SermonDate.Date</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="faith-cta-area style-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="cta-text d-flex justify-content-between align-items-center">
+                    <h5>Most Recent Sermon</h5>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="single-sermons style-3">
+
+    @foreach (var sermon in Model.Sermons)
+    {
+        if (sermon.SermonDate >= DateTime.Now)
+        {
+            <div class="sermons-content d-flex align-items-center">
+
+                <div class="sermons-thumbnail bg-img">
+                    <img src="@Url.Content("~/Content/Images/")@sermon.ImageThumbnailUrl" alt="preacher :@sermon.PreacherName" />
+                </div>
+                <div class="sermons-text">
+                    <a href="@Url.Action("SermonDetails", "Sermon", new { id = sermon.CatId })">
+
+                        <h6>@sermon.SermonTitle</h6>
+                    </a>
+                    <p>by @sermon.PreacherName</p>
+                    <p class="date"> @sermon.SermonDate.Date</p>
+                    <p class="text">@sermon.ShortDescription</p>
+                </div>
+
+                <div class="sermons-audio-player mt-70 d-flex align-items-center">
+                    <audio preload="auto" controls>
+                        <source src="~/Content/audio/dummy-audio.mp3">
+                    </audio>
+                    <div class="see-more-btn">
+                        <a href="#">See More</a>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        }
+    }
+</div>
+
+
+

@@ -1,0 +1,68 @@
+﻿@model GospelWorld.Models.EventModel
+@{
+    ViewBag.Title = "EventDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.EventName</h2>
+
+<div class="page-header parallax clearfix">
+    <div class="page-header-overlay" style="background-image:url(http://placehold.it/1200x315&amp;text=IMAGE+PLACEHOLDER);"></div>
+    <div class="title-subtitle-holder">
+        <div class="title-subtitle-holder-inner">
+            <h2>@Model.EventDate.Day / @Model.EventDate.Month / @Model.EventDate.Year</h2>
+            <div class="header-event-time">@Model.EventDate.TimeOfDay</div>
+        </div>
+    </div>
+</div>
+
+<div class="lgray-bg breadcrumb-cont">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li class="active">@Model.EventTheme</li>
+        </ol>
+    </div>
+</div>
+
+<div class="main" role="main">
+    <div id="content" class="content full">
+        <div class="single-event-content event-list-item event-dynamic">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-4">
+                        <h2 class="event-title">@Model.EventTheme</h2>
+                        <span class="event-date hidden">@Model.EventDate</span>
+                        <span class="hidden">From <span class="event-time">@Model.EventDate</span></span>
+                        <span class="meta-data event-location-address"><i class="fa fa-map-marker"></i> @Model.EventLocation</span>
+                        <hr class="sm">
+
+                    </div>
+
+
+
+                    <div class="col-md-9 col-sm-8">
+                        <div class="event-details">
+                            <div class="event-details-left">
+
+                                <img src="@Url.Content("~/Content/Images/")@Model.EventImageUrl" />
+
+                                <div class="clearfix"></div>
+                                <div class="col-md-12">
+                                    <p>@Html.Raw(Model.EventDescription)</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <a id="back-to-top"><i class="fa fa-angle-double-up"></i></a>
+</div>
+
+

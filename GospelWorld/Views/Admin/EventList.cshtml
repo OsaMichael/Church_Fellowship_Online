@@ -1,0 +1,72 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model GospelWorld.Models.EventListViewModel
+@{
+    ViewBag.Title = "EventList";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var c = ViewBag.Page ?? 1;
+    var j = c - 1;
+    var p = ViewBag.PageSize ?? Model.Events.Count();
+    var m = j * p;
+    var sn = m + 1;
+}
+
+<h2>List Of Events</h2>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        All Events @Html.ActionLink("Add Event", "AddEvent", null, new { @class = "btn btn-success btn-sm-pull-right linker" })
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped rbody">
+            <tr>
+                <th>S/N</th>
+                <th></th>
+                <th>Name</th>
+                <th>Event Theme</th>
+
+                <th>Event Location</th>
+                <th></th>
+            </tr>
+
+
+
+            @foreach (var events in Model.Events)
+            {
+                <tr>
+                    <td>@sn</td>
+                    <td>
+                        <img src="@Url.Content("~/Content/Images/")@events.EventImageThumbnailUrl" class="img-thumbnail-small img-circle" style="width:65px; height:65px;" alt="Products/@events.EventName" />
+                    </td>
+                    <td>@events.EventName</td>
+                    <td>@events.EventTheme</td>
+                    @*<td>@events.EventDescription</td>*@
+                    <td>@events.EventLocation</td>
+
+                    <td><a href="/Admin/EditEvent/@events.EventId" class="linker">Edit</a></td>
+                    <td>
+                        @using (Html.BeginForm("DeleteEvent", "Admin"))
+                        {
+                            @Html.Hidden("Id", events.EventId)
+                            <input type="submit" class="btn btn-danger btn-xs Delete" value="Delete" />
+                        }
+
+                    </td>
+                </tr>
+
+
+                sn++;
+            }
+        </table>
+
+
+    </div>
+    <div class="panel-footer">
+        <div id="contentPager">
+            @Html.PagedListPager(Model.Events, page => Url.Action("EventList", new { page }), new PagedListRenderOptions { LiElementClasses = new List<string> { "pagerli" }, DisplayPageCountAndCurrentLocation = true, DisplayItemSliceAndTotal = true })
+        </div>
+
+    </div>
+
+</div>
+
+

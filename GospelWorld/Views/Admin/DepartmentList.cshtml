@@ -1,0 +1,81 @@
+﻿
+
+@using PagedList;
+@using PagedList.Mvc;
+
+
+@model GospelWorld.Models.DeptListViewModel
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    ViewBag.Title = "Index";
+    var c = ViewBag.Page ?? 1;
+    var j = c - 1;
+    var p = ViewBag.PageSize ?? Model.Departments.Count;
+    var m = j * p;
+    var sn = m + 1;
+}
+
+<h2>Sermons</h2>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Áll Sermons  @Html.ActionLink("Add Department", "AddDept", null, new { @class = "btn btn-success btn-sm pull-right linker" })
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped rbody" id="departmentlist">
+            <tr>
+                <th>S/N</th>
+                <th>Department Leader Image </th>
+                <th>Department Name</th>
+                @*<th>Meeting  Day and Time</th>*@
+                <th>Meeting Location</th>
+                <th>Descripption</th>
+                <th>Department Leader</th>
+
+                <th></th>
+                <th></th>
+            </tr>
+
+            @foreach (var dept in Model.Departments)
+            {
+                <tr>
+                    <td>@sn</td>
+                    <td>
+                        <img src="@Url.Content("~/Content/Images/")@dept.ImageThumbnailUrl" class="img-thumbnail-small img-circle" style="width:65px; height:65px;" alt="preacher/@dept.DeptName" />
+                    </td>
+                    <td>@dept.DeptName</td>
+
+                    <td>@dept.DeptLocation</td>
+                    <td style="width: 200px;">@Html.Raw(dept.Description)</td>
+                    <td style="width: 200px;">@dept.DeptLeaderName</td>
+
+                    <td><a href="/Admin/EditDept/@dept.DeptId" class="linker">Edit</a></td>
+                    <td>
+                        @using (Html.BeginForm("DeleteDept", "Admin"))
+                        {
+                            @Html.Hidden("Id", dept.DeptId)
+
+                            <input type="submit" class="btn btn-danger btn-xs " value="Delete" />
+                        }
+
+                    </td>
+                </tr>
+                sn++;
+            }
+        </table>
+
+
+    </div>
+    <div class="panel-footer">
+        <div id="contentPager">
+            @Html.PagedListPager(Model.Departments, page => Url.Action("DepartmentList", new { page }), new PagedListRenderOptions { LiElementClasses = new List<string> { "pagerli" }, DisplayPageCountAndCurrentLocation = true, DisplayItemSliceAndTotal = true })
+        </div>
+
+    </div>
+
+</div>
+@*<script>
+        var datatable;
+        $(document).ready(function () {
+            datatable=$('#sermonlist').Dat
+        });
+    </script>*@

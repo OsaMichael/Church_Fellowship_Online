@@ -1,0 +1,23 @@
+﻿@model IEnumerable<GospelWorld.Models.SermonCategoryModel>
+
+
+
+@*@foreach (var sermon in Model)
+    {
+
+        <a href="@Url.Action("SermonsbyCategory","Sermon")" class="dropdown-toggle" data-toggle="dropdown" role="button">@sermon.SermonDescription <b class="caret"></b></a>
+
+    }*@
+
+<ul class="dropdown-menu">
+
+    @foreach (var sermon in Model)
+    {
+        <li>
+            @Html.ActionLink(sermon.SermonName, "SermonsbyCategory", "Sermon", new { name = @sermon.SermonName }, new { @class = "" })
+
+        </li>
+    }
+
+
+</ul>

@@ -1,0 +1,73 @@
+﻿@model GospelWorld.Models.EventModel
+    @using GospelWorld.Models;
+@{
+    ViewBag.Title = "EventCalendar";
+}
+
+<h2>EventCalendar</h2>
+
+<div class="page-header parallax clearfix" style="background-image:url(http://placehold.it/1200x300&amp;text=IMAGE+PLACEHOLDER);">
+    <div class="title-subtitle-holder">
+        <div class="title-subtitle-holder-inner">
+            <h2>Events Calendar</h2>
+        </div>
+    </div>
+</div>
+<div class="lgray-bg breadcrumb-cont">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">Events Calendar</li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="main" role="main">
+    <div id="content" class="content full">
+        <div class="container">
+            <div id='calendar'></div>
+        </div>
+    </div>
+</div>
+
+<div class="main" role="main">
+    <div id="content" class="content full">
+        <div class="container">
+            <div class="events-listing-header">
+                <ul class="sort-source" data-sort-id="events" data-option-key="filter">
+                    <li data-option-value="*" class="active"><a href="@Url.Action("UpcomingEvents","Event")">Show All</a></li>
+
+                    <li data-option-value=".meetings"><a href="@Url.Action("Index","Department")">Meetings</a></li>
+
+                </ul>
+            </div>
+
+            <div class="row">
+                <ul class="sort-destination" data-sort-id="events">
+                    @foreach (var eve in ViewBag.events)
+                    {
+                        <li class="col-md-4 col-sm-6 event-list-item event-item event-dynamic grid-item format-standard celebrations">
+                            <div class="grid-item-inner">
+
+                                <a href="@Url.Action("UpcomingEvents", "Event", new { id = eve.EventId })" class="media-box">
+                                    <img src="@Url.Content("~/Content/Images/")@eve.EventImageThumbnailUrl" class="img-thumbnail-small img-circle" style="width:65px; height:65px;" alt="preacher/@eve.EventTheme" />
+                                </a>
+                                <div class="grid-content">
+                                    <h3><a href="@Url.Action("UpcomingEvents", "Event", new { id = eve.EventId })" class="event-title">@eve.EventName</a></h3>
+                                    <span class="meta-data"><i class="fa fa-calendar"></i> <span class="event-date">@eve.EventDate.Day</span> at <span class="event-time">@eve.EventDate.TimeOfDay</span></span>
+                                    <span class="meta-data event-location-address"><i class="fa fa-map-marker"></i> @eve.EventLocation</span>
+                                </div>
+                                <div class="grid-footer clearfix">
+                                    <a href="@Url.Action("EventDetails", "Event", new { id = eve.EventId })" class="pull-right btn btn-primary btn-sm event-tickets event-register-button">View Event Details</a>
+
+                                </div>
+                            </div>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

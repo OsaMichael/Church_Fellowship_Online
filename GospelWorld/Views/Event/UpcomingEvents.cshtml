@@ -1,0 +1,46 @@
+﻿@model IEnumerable<GospelWorld.Models.EventModel>
+@{
+    ViewBag.Title = "Upcoming Events";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main" role="main">
+    <div id="content" class="content full">
+        <div class="container">
+            <section class="faith-about-area section-padding-100-0">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="about-content">
+                                <h2>“All Event”</h2>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="row">
+
+                @foreach (var eve in ViewBag.events)
+                {
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="single-ministry mb-100">
+                            <img src="@Url.Content("~/Content/Images/")@eve.EventImageThumbnailUrl" alt="@eve.EventTheme">
+
+                            <div class="ministry-content">
+                                <h6>@eve.EventName</h6>
+                                <span>@eve.EventDate.Day  by @eve.EventDate.TimeOfDay </span>
+                                <p>@eve.EventLocation</p>
+                                <div class="ministry-btn">
+                                    <a href="@Url.Action("EventDetails", "Event", new { id = eve.EventId })" class="btn btn-primary">See More</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
