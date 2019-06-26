@@ -1,4 +1,7 @@
-﻿@model GospelWorld.Models.HomeViewModel
+﻿@using GospelWorld.Models;
+@model GospelWorld.Models.HomeViewModel
+@using GospelWorld.Models.User;
+
 @{
     Layout = "~/Views/Shared/AdminLayout.cshtml";
     ViewBag.Title = "Index";
@@ -9,15 +12,15 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Dashboard</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active"> Dashboard</li>
-                    </ol>
-                </div><!-- /.col -->
+                @*<div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Dashboard</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active"> Dashboard</li>
+                        </ol>
+                    </div><!-- /.col -->*@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -29,7 +32,7 @@
             <div class="row">
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
-                    <div class="small-box bg-info">
+                    <div class="small-box bg-app-primary">
                         <div class="inner">
                             <h3>@ViewBag.DepartmentCount</h3>
 
@@ -45,7 +48,7 @@
                 <!-- ./col -->
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
-                    <div class="small-box bg-success">
+                    <div class="small-box bg-app-primary">
                         <div class="inner">
                             <h3>@ViewBag.SermonCount<sup style="font-size: 20px"></sup></h3>
 
@@ -60,7 +63,7 @@
                 <!-- ./col -->
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
-                    <div class="small-box bg-warning">
+                    <div class="small-box bg-app-primary">
                         <div class="inner">
                             <h3>@ViewBag.MemberCount</h3>
 
@@ -75,7 +78,7 @@
                 <!-- ./col -->
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
-                    <div class="small-box bg-danger">
+                    <div class="small-box bg-app-primary">
                         <div class="inner">
                             <h3>@ViewBag.EventCount</h3>
 
@@ -90,7 +93,7 @@
                 <!-- ./col -->
                 <div class="col-lg-3 col-6">
 
-                    <div class="small-box bg-danger">
+                    <div class="small-box bg-app-primary">
                         <div class="inner">
                             <h3>@ViewBag.WorkerCount</h3>
 
@@ -140,7 +143,7 @@
                         <div class="form-group">
                             <label for="role">Role</label>
                             <select class="form-control" id="role" name="RoleName">
-                                @*@foreach (var role in Model.Roles)
+                                @*@foreach (var role in Model.RoleName)
                                     {
                                         <option value="@role.Id">@role.Name</option>
                                     }*@
@@ -148,6 +151,7 @@
                         </div>
                     </form>
                 </div>
+
                 <div class="modal-footer">
                     <img src="~/Content/img/ajax-loader.gif" id="loader" style="display:none" />
                     <button class="btn btn-success" id="AddLogin">Add</button>
@@ -156,4 +160,41 @@
             </div>
         </div>
     </div>
-</div>
+    @*@Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Search here" })
+
+            <div class="col-md-9" , id="useriii">
+
+                @if (ViewBag.UserList != null)
+                {
+                    foreach (var itm in ViewBag.UserList)
+                    {
+                        <tr>
+                            <td>itm.UserName</td>
+                            <td>itm.PhoneNumber</td>
+                            <td><a href="#"><i class="glyphicon glyphicon-eye-open"></i>View</a></td>
+                        </tr>
+                    }
+                }
+
+
+
+            </div>
+        </div>*@
+
+    @*<script>
+            $(document).ready(function () {
+                $("#Name").keydown(function () {
+                    var searchtext = $(this).val();
+                    debugger
+                    $.ajax({
+                        type: "Post",
+                        url: "/Admin/GetSerachRecord?SearchText" + searchtext,
+                        contentType: "html",
+                        success: function (response) {
+
+                            #("#useriii").html(response)
+                        }
+                    })
+                })
+            })
+        </script>*@

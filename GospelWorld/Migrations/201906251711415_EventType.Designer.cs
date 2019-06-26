@@ -7,13 +7,13 @@ namespace GospelWorld.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class adupdate : IMigrationMetadata
+    public sealed partial class EventType : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(adupdate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(EventType));
         
         string IMigrationMetadata.Id
         {
-            get { return "201906120957209_adupdate"; }
+            get { return "201906251711415_EventType"; }
         }
         
         string IMigrationMetadata.Source

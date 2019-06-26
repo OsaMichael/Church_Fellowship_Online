@@ -1,0 +1,55 @@
+﻿@model GospelWorld.Models.SermonModel
+
+@{
+    ViewBag.Title = "SermonDetails";
+
+}
+
+
+<div class="main" role="main">
+    <div id="content" class="content full">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+
+                    <h5><span>@Model.SermonTitle</span></h5>
+                    <span class="meta-data">Text: @Model.SermonText</span>
+                    <div class="sermon-media clearfix">
+
+                        <div class="sermon-media-right">
+                            <div class="sermon-media-content">
+
+                                <div class="latest-sermon-content sermon-tabs" id="self-audio">
+                                    <blockquote>
+                                        <p>@Html.Raw(Model.LongDescription)</p>
+                                    </blockquote>
+                                </div>
+                            </div>
+                            <p>@Html.Raw(Model.LongDescription)</p>
+                            @Html.ActionLink("Print", "PrintPdf", null, new { @class = "btn btn-primary" }) <div class="social-share-bar">
+
+                                <a href="@Url.Action("Index","Sermon")" class="basic-link backward">Back to series</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="widget sidebar-widget widget_sermon_speakers">
+                        <h3 class="widgettitle">Sermon Speakers <span>@Model.PreacherName</span></h3>
+                        <ul>
+                            <li>
+                                <a href="@Url.Action("SermonDetails","Sermon", new { id = Model.SermId } )" class="media-box">
+                                    <img src="@Url.Content("~/Content/Images/")@Model.ImageThumbnailUrl" class="img-thumbnail transition" alt="sermons/@Model.PreacherName" />
+                                </a>
+                            </li>
+                            <li>
+                                <p> @Model.SermonDate.Date</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

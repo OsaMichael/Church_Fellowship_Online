@@ -1,7 +1,10 @@
-﻿using GospelWorld.Interface;
+﻿using GospelWorld.Entities;
+using GospelWorld.Interface;
 using GospelWorld.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -35,6 +38,23 @@ namespace GospelWorld.Managers
 
             return true;
         }
+
+        // STORE PROCEEDURE
+        public IEnumerable<Sermon> GetAllBibleTest( /*string bibleTest*/SermonModel model)
+        {
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                var param1 = new SqlParameter
+                {
+                    ParameterName = "@SermonText",
+                    SqlDbType = SqlDbType.Text,
+                    Direction = ParameterDirection.Output,
+                    Value = model.SermonText
+                };
+                return context.Database.SqlQuery<Sermon>("exec SelectSermonTest @SermonText", param1).ToList();
+            };
+        }
+
         public List<SermonModel> GetSermons()
         {
             var entities = _context.Sermons.ToList();
@@ -74,10 +94,10 @@ namespace GospelWorld.Managers
             return true;
 
         }
-        public SermonModel GetSermonById(int id)
+        public SermonModel GetSermonById(int id )
         {
 
-            var entity = _context.Sermons.Where(x => x.SermId == id).FirstOrDefault();
+            var entity = _context.Sermons.FirstOrDefault(x => x.SermId == id);
             if (entity == null) throw new Exception(" user Id not found");
             return new SermonModel(entity);
 

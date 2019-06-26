@@ -25,7 +25,7 @@ namespace GospelWorld.Controllers
         public ActionResult Index()
         {
             var sermon = _sermonServices.GetSermons().OrderBy(n =>n.SermonDate);
-            ViewBag.SermonCategory = _context.SermonCategories.ToList().Select(r => new SermonCategoryModel
+            ViewBag.SermonCategory = _context.SermonCategories.ToList().Select(r => new SermonCategoryModel(r)
             {
                   SermonDescription = r.SermonDescription,
                    SermonName = r.SermonName
@@ -41,6 +41,15 @@ namespace GospelWorld.Controllers
 
             };
             return View(svm);
+        }
+
+        public ActionResult BibleTestss(SermonModel model)
+        {
+            var results = _sermonServices.GetAllBibleTest(model);
+            
+            return View(results);
+
+
         }
 
         public ActionResult PrintPdf (SermonModel model)
@@ -72,10 +81,11 @@ namespace GospelWorld.Controllers
             };
             return View("Index", svm);
         }
-        public ActionResult SermonDetails(int id)
+        public ActionResult SermonDetails(int id = 0)
         {
 
-            var _sermon = _sermonServices.GetSermonById(id);
+            var _sermon = _context.Sermons.Find(id);
+            var result = _sermonServices.GetSermonById(id);
             var sermon = _sermon;
             //var sivm = new SermonIndexViewModel
             //{

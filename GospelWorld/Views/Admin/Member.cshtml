@@ -7,9 +7,7 @@
 
 }
 
-
-
-@using (Html.BeginForm("Member", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+ @using (Html.BeginForm("Member", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <hr />
@@ -92,7 +90,7 @@
 
         </div>
 
-        <div class="container">
+        @*<div class="container">
             <div class="row">
                 <div class='col-sm-6'>
                     <div class="form-group">
@@ -106,33 +104,35 @@
                 </div>
 
             </div>
-        </div>
-        @*<div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="radio" value="Male" name="gender" checked> Male<br />
-                <input type="radio" value="Female" name="gender"> Female<br />
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Married, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="col-md-offset-2 col-md-10">
-                <input type="radio" value="Yes" name="Married"> Yes<br />
-                <input type="radio" value="No" name="Married"> No<br />
-                @Html.ValidationMessageFor(model => model.Married, "", new { @class = "text-danger" })
-            </div>
         </div>*@
 
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="radio" value="Male" name="gender" checked> Male<br />
+                    <input type="radio" value="Female" name="gender"> Female<br />
+                </div>
+            </div>*@
+
+            @*<div class="form-group">*@
+                @*@Html.LabelFor(model => model.Married, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="radio" value="Yes" name="married" checked> Yes<br />
+                    <input type="radio" value="No" name="married"> No<br />
+                    @Html.ValidationMessageFor(model => model.Married, "", new { @class = "text-danger" })
+                </div>*@
+            @*</div>*@
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
             </div>
-        </div>
-    </div>
-}
+        @*</div>*@
+         </div>
+      }
 
 <div>
     @Html.ActionLink("Back to List", "Index")

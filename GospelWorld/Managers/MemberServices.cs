@@ -26,6 +26,7 @@ namespace GospelWorld.Managers
 
 
                 var entity = model.Create(model);
+                _context.Members.Add(entity);
                 _context.SaveChanges();
 
 

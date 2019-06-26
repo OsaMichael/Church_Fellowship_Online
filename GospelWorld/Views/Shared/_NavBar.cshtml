@@ -54,17 +54,17 @@
                                 <li>
                                     @Html.ActionLink("Sermon", "Index", "Sermon")
                                     <ul class="dropdown">
-                                        <li><  @Html.ActionLink("Home", "Index", "Sermon")</li>
+                                        <li>@Html.ActionLink("Home", "Index", "Sermon")</li>
                                         @*<li>
-                                                <a href="@Url.Action("DepartmentCorner","Department")">Ministries</a>
+                        <a href="@Url.Action("DepartmentCorner","Department")">Ministries</a>
 
-                                            </li>*@
+                    </li>*@
                                         @*<li>@Html.ActionLink("Gallery", "Galleries", "Home")</li>
-                                            <li> @Html.Action("SermonMenu", "Navigation")</li>
+                    <li> @Html.Action("SermonMenu", "Navigation")</li>
 
-                                            <li>@Html.ActionLink("Events", "UpcomingEvents", "Event")</li>
-                                            <li> @Html.ActionLink("Contact", "Contact", "Home")</li>
-                                            <li>  @Html.ActionLink("Login", "Login", "Account")</li>*@
+                    <li>@Html.ActionLink("Events", "UpcomingEvents", "Event")</li>
+                    <li> @Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>  @Html.ActionLink("Login", "Login", "Account")</li>*@
                                     </ul>
                                 </li>
                                 @*<li> @Html.Action("SermonMenu", "Navigation")</li>*@
@@ -74,7 +74,17 @@
 
                             <div class="search-btn">
                                 <i class="fa fa-search" aria-hidden="true"></i>
+
                             </div>
+
+                         
+                                @*<div class="search-box">
+                                    <input type="text" placeholder="Search" class="input">
+                                    <div class="btn">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </div>
+                                </div>*@
+                       
 
                             <div class="donate-btn">
                                 @Html.ActionLink("Login", "Login", "Account")
@@ -88,3 +98,9 @@
         </div>
     </div>
 </header>
+
+<script>
+    $(document).on('click', '.fa-search', function () {
+        console.log('clicked');
+    })
+</script>

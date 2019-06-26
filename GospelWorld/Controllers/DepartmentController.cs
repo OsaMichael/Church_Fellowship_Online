@@ -12,7 +12,7 @@ namespace GospelWorld.Controllers
     {
         private IDepartmentService _service;
         private ApplicationDbContext context = new ApplicationDbContext();
-        public DepartmentController(IDepartmentService service)
+        public DepartmentController(IDepartmentService service )
         {
             _service = service;
         }
@@ -21,7 +21,7 @@ namespace GospelWorld.Controllers
         public ActionResult DepartmentCorner()
         {
             // ViewBag.profile = context.Departments.ToList();
-            var results = _service.GetDepartments();
+            var results = context.Departments.ToList();
            // var connect = context.Departments.ToList();
             var dvn = new DeptListViewModel
             {

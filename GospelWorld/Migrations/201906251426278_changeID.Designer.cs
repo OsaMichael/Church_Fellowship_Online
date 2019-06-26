@@ -7,13 +7,13 @@ namespace GospelWorld.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class addAdmin : IMigrationMetadata
+    public sealed partial class changeID : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addAdmin));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(changeID));
         
         string IMigrationMetadata.Id
         {
-            get { return "201905301432308_addAdmin"; }
+            get { return "201906251426278_changeID"; }
         }
         
         string IMigrationMetadata.Source

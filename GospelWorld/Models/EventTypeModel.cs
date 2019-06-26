@@ -19,7 +19,7 @@ namespace GospelWorld.Models
         public string Description { get; set; }
         public string Name { get; set; }
         public bool Done { get; set; } = false;
-        public virtual ICollection<EventModel> Events { get; set; }
+       // public virtual ICollection<EventModel> Events { get; set; }
 
         public EventTypeModel()
         {

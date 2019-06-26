@@ -77,7 +77,7 @@ namespace GospelWorld.Controllers
                     //_context.Workers.Add(worker);
                     //_context.SaveChanges();
                     TempData["message"] = string.Format("{0} has been saved.", model.FirstName);
-                    return RedirectToAction("index");
+                    return RedirectToAction("Index", "Sermon");
                 }
                 else
                 {

@@ -9,7 +9,7 @@ namespace GospelWorld.Models
 {
     public class DeptListViewModel
     {
-        public IPagedList<DepartmentModel> Departments { get; set; }
-        public IEnumerable<DepartmentModel> AllDepartment { get; set; } = Enumerable.Empty<DepartmentModel>();
+        public IPagedList<Department> Departments { get; set; }
+        public IEnumerable<Department> AllDepartment { get; set; } = Enumerable.Empty<Department>();
     }
 }

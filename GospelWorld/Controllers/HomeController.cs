@@ -30,7 +30,7 @@ namespace GospelWorld.Controllers
         public ActionResult Index()
         {
             var members = _context.Members.ToList(); ;
-            var upcomingevent = _context.Events.ToList(); ;
+            var upcomingevent = _context.Events.ToList() ;
             var sermon = _context.Sermons.ToList();
             var deptimg = _context.Departments.ToList();
 
@@ -64,12 +64,12 @@ namespace GospelWorld.Controllers
 
         public ActionResult NatioalProgramme()
         {
-            var currentdepartment = _dtservice.GetDepartments();
+            var currentdepartment = _context.Departments.ToList();
 
-            var dvm = new DeptListViewModel
+            var dvm = new HomeViewModel
             {
 
-                AllDepartment = currentdepartment
+                Departments = currentdepartment
 
             };
             return View(dvm);

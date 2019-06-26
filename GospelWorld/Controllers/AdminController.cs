@@ -2,6 +2,7 @@
 using GospelWorld.Interface;
 using GospelWorld.Managers;
 using GospelWorld.Models;
+using GospelWorld.Models.User;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Web.Mvc;
 
 namespace GospelWorld.Controllers
 {
-    //[Authorize]
+    [Authorize]
 
     public class AdminController : Controller
     {
@@ -24,6 +25,7 @@ namespace GospelWorld.Controllers
         private ISermonServices _sermonServices;
         private IWorkerServices _workServ;
         private ISermonCategoryServ _sermonCategory;
+        private ElasticEmailService _ElasticEmailService;
 
         public AdminController(IMemberServices services, IDepartmentService departmentService, IWorkerServices worker, IMemberServices member, ISermonServices sermon, ApplicationDbContext applicationDb ,IEventServices eventServices, ISermonCategoryServ sermonCategory)
         {
@@ -35,10 +37,15 @@ namespace GospelWorld.Controllers
             _context = applicationDb;
             _sermonCategory = sermonCategory;
         }
+        [Authorize]
         // GET: Admin
         public ActionResult Index()
 
         {
+            //List<ApplicationUser> list = _context.Users.Select(x => new ApplicationUser { UserName = x.UserName, Email = x.Email, PhoneNumber = x.PhoneNumber, Id = x.Id }).ToList();
+
+            //ViewBag.UserList = list;
+
             ViewBag.DepartmentCount = _dtservice.GetDepartments().Count();
             ViewBag.EventCount = _event.GetEvents().Count();
             ViewBag.SermonCount = _sermonServices.GetSermons().Count();
@@ -46,12 +53,14 @@ namespace GospelWorld.Controllers
             ViewBag.MemberCount = _memberServices.GetMembers().Count();
             return View();
         }
+ 
         [HttpGet]
         public ActionResult Member()
         {
             var member = _memberServices.GetMembers().Select(r => r.FirstName + " " + r.LastName);
             return View(new MemberModel());
         }
+  
         [HttpPost]
         public ActionResult Member(MemberModel model)
         {
@@ -151,28 +160,28 @@ namespace GospelWorld.Controllers
         [HttpGet]
         public ActionResult AddEvent()
         {
-            // var eventtype = _event.GetEvents().Select(r => r.EventName);
+            var eventtype = _context.Eventtypes.Select(r => r.Name);
+          //  var result = _event.GetEventTypes().Select(r => r.Name);
 
-            // ViewBag.Events = new SelectList(_context.Eventtypes, "EventTypId", "Name");
-            ViewBag.Events = new SelectList(_event.GetEventTypes(), "ETId", "Name");
-            //  ViewBag.Events = new SelectList(eventtype);
+            ViewBag.Events = new SelectList(eventtype);
+           // ViewBag.Events = new SelectList(result);
             return View(new EventModel());
+
+            //ViewBag.Events = new SelectList(_event.GetEventTypes(), "ETId", "Name");
+            ////  ViewBag.Events = new SelectList(eventtype);
+            //return View(new EventModel());
         }
-        [ValidateInput(false)]
+        //[ValidateInput(false)]
         [HttpPost]
         public ActionResult AddEvent(EventModel model)
         {
-
-          
-
             if (ModelState.IsValid)
             {
 
-                // ViewBag.Events = new SelectList(_context.Eventtypes, "EventTypId", "Name");
+               // ViewBag.Events = new SelectList(_event.GetEventTypes(), "ETId", "Name");
 
-                ViewBag.Events = new SelectList(_event.GetEventTypes(), "ETId", "Name");
+                var eventtype = _context.Eventtypes.Where(r => r.Name == model.EventType).FirstOrDefault();
 
-                var eventtype = _context.Eventtypes.Where(r => r.Name == model.EventName).FirstOrDefault();
                 string fileName = Path.GetFileNameWithoutExtension(model.EventImageFile.FileName);
                 string extension = Path.GetExtension(model.EventImageFile.FileName);
                 fileName = fileName + DateTime.Now.ToString("yymmssffff") + extension;
@@ -182,7 +191,7 @@ namespace GospelWorld.Controllers
 
                 // var result = _event.CreateEvent(model);
 
-                var result = _event.CreateEvent(model);
+               // var result = _event.CreateEvent(model);
 
                 //var addevent = new Event
                 //{
@@ -193,7 +202,7 @@ namespace GospelWorld.Controllers
                 //    EventImageUrl = model.EventImageUrl,
                 //    EventLocation = model.EventLocation,
                 //    EventImageThumbnailUrl = model.EventImageUrl,
-                //    Eventtype = eventtype
+                //    EventType = eventtype
                 //};
                 //_context.Events.Add(addevent);
                 //_context.SaveChanges();
@@ -211,7 +220,7 @@ namespace GospelWorld.Controllers
         [HttpGet]
         public ActionResult EditSermon(int id)
         {
-            var _sermon = _sermonServices.GetSermonById(id);
+            var _sermon = _context.Sermons.Find(id);
             var sermoncategories = _context.SermonCategories.ToList();
             var sermoncat = _sermon.SermonCategory;
             ViewBag.SermonCategories = new SelectList(sermoncategories, "SermonName", "SermonName", sermoncat.SermonName);
@@ -361,9 +370,37 @@ namespace GospelWorld.Controllers
             }
             return RedirectToAction("WorkerList");
         }
+        public ActionResult DeleteDept(int id)
+        {
+            var worker = _context.Departments.Where(s => s.DeptId == id).FirstOrDefault();
+            if (worker.ImageUrl != null)
+            {
+                var filepath = Server.MapPath(@"~/Content/Images");
+                List<string> files = Directory.GetFiles(filepath).ToList();
+                var fullpath = string.Empty;
+                string filename = worker.ImageUrl;
+                string realfilename = files.Where(i => i.Contains(filename)).FirstOrDefault();
+                if (realfilename != null)
+                {
+                    fullpath = Path.Combine(Server.MapPath("~/Content/Images/"), realfilename);
+                    if (System.IO.File.Exists(fullpath))
+                    {
+                        System.IO.File.Delete(fullpath);
+                        var ImgMessage = $"the image:{fullpath} was also removed";
+                    }
+                }
+            }
+            if (worker != null)
+            {
+                _context.Departments.Remove(worker);
+                _context.SaveChanges();
+                TempData["message"] = $"{worker.DeptName} was successfully deleted.{Environment.NewLine}";
+            }
+            return RedirectToAction("DepartmentList");
+        }
         public ActionResult DeleteSermon(int Id)
         {
-            var _sermon = _sermonServices.GetSermons().Where(s => s.SermId == Id).FirstOrDefault();
+            var _sermon = _context.Sermons.Where(s => s.SermId == Id).FirstOrDefault();
             if (_sermon.ImageUrl != null)
             {
                 var filepath = Server.MapPath(@"~/Content/Images");
@@ -384,7 +421,7 @@ namespace GospelWorld.Controllers
             if (_sermon != null)
             {
 
-                _sermonServices.GetSermons().Remove(_sermon);
+                _context.Sermons.Remove(_sermon);
                 _context.SaveChanges();
                 TempData["message"] = $"{_sermon.SermonTitle} was successfully deleted.{Environment.NewLine}";
             }
@@ -429,65 +466,65 @@ namespace GospelWorld.Controllers
             ViewBag.PageSize = pageSize;
             return View(elvm);
         }
-        [HttpGet]
-        public ActionResult EditEvent(int id)
-        {
-            var _eventt = _event.GetEventById(id);
-            var eventype = _event.GetEvents();
-            var _eventtype = _eventt.Eventtype;
-            ViewBag.EventType = new SelectList(eventype, "Name", "Name", _eventtype.Name);
-            var evm = new EventModel
-            {
-                EventType = _eventt.Eventtype.Name,
-                EventDate = _eventt.EventDate,
-                EventDescription = _eventt.EventDescription,
-                EventLocation = _eventt.EventLocation,
-                EventName = _eventt.EventName,
-                EventTheme = _eventt.EventTheme,
-                EventImageUrl = _eventt.EventImageUrl
-            };
-            return View(evm);
-        }
-        [ValidateInput(false)]
-        [HttpPost]
-        public ActionResult EditEvent(EventModel evm)
-        {
-            if (ModelState.IsValid)
-            {
-                var events = _event.GetEventById(evm.EventId);
-                var eventype = _event.GetEventTypes().Where(s => s.Name == evm.EventType).FirstOrDefault();
+        //[HttpGet]
+        //public ActionResult EditEvent(int id)
+        //{
+        //    var _eventt = _event.GetEventById(id);
+        //    var eventype = _event.GetEvents();
+        //    var _eventtype = _eventt.Eventtype;
+        //    ViewBag.EventType = new SelectList(eventype, "Name", "Name", _eventtype.Name);
+        //    var evm = new EventModel
+        //    {
+        //        EventType = _eventt.Eventtype.Name,
+        //        EventDate = _eventt.EventDate,
+        //        EventDescription = _eventt.EventDescription,
+        //        EventLocation = _eventt.EventLocation,
+        //        EventName = _eventt.EventName,
+        //        EventTheme = _eventt.EventTheme,
+        //        EventImageUrl = _eventt.EventImageUrl
+        //    };
+        //    return View(evm);
+        //}
+        //[ValidateInput(false)]
+        //[HttpPost]
+        //public ActionResult EditEvent(EventModel evm)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var events = _event.GetEventById(evm.EventId);
+        //        var eventype = _event.GetEventTypes().Where(s => s.Name == evm.EventType).FirstOrDefault();
 
 
-                if (events != null)
-                {
-                    string fileName = Path.GetFileNameWithoutExtension(evm.EventImageFile.FileName);
-                    string extension = Path.GetExtension(evm.EventImageFile.FileName);
-                    fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                    evm.EventImageUrl = fileName;
-                    fileName = Path.Combine(Server.MapPath("~/Content/Images/"), fileName);
+        //        if (events != null)
+        //        {
+        //            string fileName = Path.GetFileNameWithoutExtension(evm.EventImageFile.FileName);
+        //            string extension = Path.GetExtension(evm.EventImageFile.FileName);
+        //            fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+        //            evm.EventImageUrl = fileName;
+        //            fileName = Path.Combine(Server.MapPath("~/Content/Images/"), fileName);
 
-                    events.EventName = evm.EventName;
-                    events.EventTheme = evm.EventTheme;
-                    events.EventLocation = evm.EventLocation;
-                    events.EventDescription = evm.EventDescription;
-                    events.EventImageUrl = evm.EventImageUrl;
-                    events.EventImageThumbnailUrl = evm.EventImageUrl;
-                    events.EventDate = evm.EventDate;
-                    if (evm.EventImageFile != null && evm.EventImageFile.ContentLength > 0)
-                    {
-                        evm.EventImageFile.SaveAs(fileName);
-                    }
-                    events.Eventtype = eventype;
-                    _context.SaveChanges();
-                    TempData["message"] = $"{events.EventName} was successfully edited.";
-                }
-                return RedirectToAction("EventList");
-            }
-            else
-            {
-                return View(evm);
-            }
-        }
+        //            events.EventName = evm.EventName;
+        //            events.EventTheme = evm.EventTheme;
+        //            events.EventLocation = evm.EventLocation;
+        //            events.EventDescription = evm.EventDescription;
+        //            events.EventImageUrl = evm.EventImageUrl;
+        //            events.EventImageThumbnailUrl = evm.EventImageUrl;
+        //            events.EventDate = evm.EventDate;
+        //            if (evm.EventImageFile != null && evm.EventImageFile.ContentLength > 0)
+        //            {
+        //                evm.EventImageFile.SaveAs(fileName);
+        //            }
+        //            events.Eventtype = eventype;
+        //            _context.SaveChanges();
+        //            TempData["message"] = $"{events.EventName} was successfully edited.";
+        //        }
+        //        return RedirectToAction("EventList");
+        //    }
+        //    else
+        //    {
+        //        return View(evm);
+        //    }
+        //}
         public ActionResult DeleteEvent(int Id)
         {
             var _event = _context.Events.Where(e => e.EventId == Id).FirstOrDefault();
@@ -678,7 +715,7 @@ namespace GospelWorld.Controllers
         public ActionResult DepartmentList(int? page)
         {
             var pageSize = 10;
-            var depts = _dtservice.GetDepartments().ToList().ToPagedList(page ?? 1, pageSize);
+            var depts = _context.Departments.ToList().ToPagedList(page ?? 1, pageSize);
             var dcvm = new DeptListViewModel { Departments = depts };
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
@@ -750,17 +787,18 @@ namespace GospelWorld.Controllers
             }
         }
         [HttpGet]
-        public ActionResult EditDept(int id)
+        public ActionResult EditDept(int id = 0)
         {
           // var _dept = _context.Departments.Find(id);
-            var _dept = _dtservice.GetDepartmentById(id);
+            var _dept = _context.Departments.Find(id);
             var dvm = new DepartmentModel
             {
                 DeptLeaderName = _dept.DeptLeaderName,
-                // DeptLeaderIamgeUrl=_dept.LeaderImageUrl,
+                DeptLeaderIamgeUrl=_dept.LeaderImageUrl,
                 // DeptMeeting=_dept.MeetingDay,
                 DeptLocation = _dept.DeptLocation,
                 DeptName = _dept.DeptName,
+                DeptId = _dept.DeptId,
                 Description = _dept.Description,
                 ImageUrl = _dept.ImageUrl,
             };
@@ -772,10 +810,11 @@ namespace GospelWorld.Controllers
         {
             if (ModelState.IsValid)
             {
-               // var _depts = _context.Departments.Find(dvm.DeptId);
-             // var _depts = _dtservice.GetDepartmentById(dvm.DeptId);
 
-                var _depts = _dtservice.UpdateDept(dvm);
+               // var _depts = _context.Departments.Find(dvm.DeptId);
+              var _depts = _dtservice.GetDepartmentById(dvm.DeptId);
+
+              //  var _depts = _context.Departments.Find(dvm.DeptId);
                 if (_depts != null)
                 {
                     string fileName = Path.GetFileNameWithoutExtension(dvm.ImageFile.FileName);
@@ -784,25 +823,27 @@ namespace GospelWorld.Controllers
                     dvm.ImageUrl = fileName;
                     fileName = Path.Combine(Server.MapPath("~/Content/Images/"), fileName);
 
+                    //var result = _dtservice.UpdateDept(dvm);
 
+                    _depts.DeptName = dvm.DeptName;
+                    _depts.Description = dvm.Description;
+                    _depts.DeptLocation = dvm.DeptLocation;
+                    //_depts.MeetingDay = dvm.DeptMeeting;
+                    _depts.ImageUrl = dvm.ImageUrl;
+                    _depts.ImageThumbnailUrl = dvm.ImageUrl;
+                    _depts.DeptLeaderName = dvm.DeptLeaderName;
+                    _depts.DeptId = dvm.DeptId;
 
-                    //string deptleader = Path.GetFileNameWithoutExtension(dvm.DeptLeaderImageFile.FileName);
-                    //string deptleaderextn = Path.GetExtension(dvm.DeptLeaderImageFile.FileName);
-                    //deptleader = deptleader + DateTime.Now.ToString("yymmssfff") + deptleaderextn;
-                    //dvm.DeptLeaderIamgeUrl = fileName;
-                    //deptleader = Path.Combine(Server.MapPath("~/Content/Images/"), deptleader);
+                    // _depts.DeptName = dvm.DeptName;
+                    // _depts.Description = dvm.Description;
+                    /// _depts.DeptLocation = dvm.DeptLocation;
+                    // //_depts.MeetingDay = dvm.DeptMeeting;
+                    // _depts.ImageUrl = dvm.ImageUrl;
+                    // _depts.ImageThumbnailUrl = dvm.ImageUrl;
+                    // _depts.DeptLeaderName = dvm.DeptLeaderName;
+                    // _depts.DeptLeaderIamgeUrl = dvm.DeptLeaderIamgeUrl;
+                    // _depts.LeaderImageThumbnailUrl = dvm.DeptLeaderIamgeUrl;
 
-                 //   var result = _dtservice.UpdateDept(dvm);
-
-                    //_depts.DeptName = dvm.DeptName;
-                    //_depts.Description = dvm.Description;
-                    //_depts.DeptLocation = dvm.DeptLocation;
-                    ////_depts.MeetingDay = dvm.DeptMeeting;
-                    //_depts.ImageUrl = dvm.ImageUrl;
-                    //_depts.ImageThumbnailUrl = dvm.ImageUrl;
-                    //_depts.DeptLeaderName = dvm.DeptLeaderName;
-                    //_depts.LeaderImageUrl = dvm.DeptLeaderIamgeUrl;
-                    //_depts.LeaderImageThumbnailUrl = dvm.DeptLeaderIamgeUrl;
 
 
                     if (dvm.ImageFile != null && dvm.ImageFile.ContentLength > 0)
@@ -818,6 +859,8 @@ namespace GospelWorld.Controllers
                 }
 
 
+                //_ElasticEmailService = new ElasticEmailService();
+                // _ElasticEmailService.Send(user, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">Reset</a>");
 
                 //_mailService.Send("A new department added", $"Department {dvm.DeptName}, and the Department Leader{dvm.DeptLeaderName} ");
                 return RedirectToAction("DepartmentList");
@@ -828,17 +871,24 @@ namespace GospelWorld.Controllers
             }
         }
 
-        //[HttpGet]
-        //public ActionResult UserList()
-        //{
-        //    List<IUser> users = _uow.Users.UserList;
-        //    List<User> userlist = users.Select(c => (User)c).ToList();
-        //    var ulvm = new UserListViewModel
-        //    {
-        //        Users = userlist
-        //    };
-        //    return View(ulvm);
-        //}
+        [HttpGet]
+        public ActionResult UserList()
+        {
+            List<ApplicationUser> users = _context.Users.ToList();
+            List<ApplicationUser> userlist = users.Select(c => (ApplicationUser)c).ToList();
+            var ulvm = new UserListViewModel
+            {
+                Users = userlist
+            };
+            return View(ulvm);
+        }
+
+        public ActionResult GetSerachRecord(string SearchText)
+        {
+            List<ApplicationUser> list = _context.Users.Where(x =>x.UserName.Contains(SearchText) ||  x.PhoneNumber.Contains(SearchText)).ToList();
+
+            return PartialView("SearchPartial", list);
+        }
     }
 }
 

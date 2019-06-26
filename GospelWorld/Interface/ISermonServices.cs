@@ -1,4 +1,5 @@
-﻿using GospelWorld.Models;
+﻿using GospelWorld.Entities;
+using GospelWorld.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace GospelWorld.Interface
         SermonModel GetSermonById(int id);
         bool DeleteSermon(int id);
         List<SermonViewModel> GetSermonViewModels();
-
+        // IEnumerable<SermonModel> GetSermons();
+        IEnumerable<Sermon> GetAllBibleTest( /*string bibleTest*/SermonModel model);
     }
 }

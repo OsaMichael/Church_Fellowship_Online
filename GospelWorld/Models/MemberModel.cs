@@ -35,7 +35,7 @@ namespace GospelWorld.Models
 
         [Display(Name = "Picture")]
         public string MemberImageUrl { get; set; }
-
+        public bool Gender { get; set; }
         public IPagedList<MemberModel> Members { get; set; }
         [FileTypes("jpg,jpeg,png")]
         public HttpPostedFileBase MemeberImageThumbnailUrl { get; set; }

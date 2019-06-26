@@ -1,0 +1,17 @@
+﻿using GospelWorld.Interface;
+using Ninject.Modules;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace GospelWorld
+{
+    public class ConfigModule : NinjectModule
+    {
+        public override void Load()
+        {
+            Bind<IConfigService>().To<ConfigService>();
+        }
+    }
+}

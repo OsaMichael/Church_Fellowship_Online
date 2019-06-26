@@ -3,7 +3,7 @@ namespace GospelWorld.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class adupdate : DbMigration
+    public partial class goinghome : DbMigration
     {
         public override void Up()
         {

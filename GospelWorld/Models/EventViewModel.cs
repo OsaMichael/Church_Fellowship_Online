@@ -5,7 +5,7 @@
 
 //namespace GospelWorld.Models
 //{
-//    public class EventViewModel
+//    public class EventModel
 //    {
 //    }
 //}

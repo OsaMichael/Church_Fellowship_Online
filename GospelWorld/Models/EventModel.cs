@@ -10,8 +10,9 @@ namespace GospelWorld.Models
 {
     public class EventModel
     {
+        
         public int EventId { get; set; }
-        public int ETId { get; set; }
+       // public int ETId { get; set; }
       //  public IEnumerable<EventModel> Events { get; set; }
         [Display(Name = "Event Name")]
         public string EventName { get; set; }
@@ -37,7 +38,7 @@ namespace GospelWorld.Models
         public string EventDescription { get; set; }
         public bool Done { get; set; } = false;
 
-        public virtual EventTypeModel Eventtype { get; set; }
+        //public virtual EventTypeModel Eventtype { get; set; }
 
 
         public EventModel()
@@ -48,20 +49,22 @@ namespace GospelWorld.Models
         public EventModel(Event devent)
         {
             this.Assign(devent);
-            Eventtype = new EventTypeModel();
+            //Eventtype = new EventTypeModel();
         }
 
         public Event Create(EventModel model)
         {
             return new Event
             {
-                ETId = model.ETId,
+                //ETId = model.ETId,
+                EventType = model.EventType,
                 EventDescription = model.EventDescription,
                 EventDate = DateTime.Now,
                  EventLocation = model.EventLocation,
                   EventName = model.EventName,
                    EventTheme = model.EventTheme,
-                    EventImageThumbnailUrl = model.EventImageThumbnailUrl,
+                    EventImageThumbnailUrl = model.EventImageUrl,
+               // EventImageThumbnailUrl = model.EventImageThumbnailUrl,
                      EventImageUrl = model.EventImageUrl
                    
                    
@@ -76,7 +79,7 @@ namespace GospelWorld.Models
             entity.EventTheme = model.EventTheme;
             entity.EventDescription = model.EventDescription;
             entity.EventId = model.EventId;
-            entity.ETId = model.ETId;
+            //entity.ETId = model.ETId;
             entity.EventDate = DateTime.Now;
             return entity;
         }

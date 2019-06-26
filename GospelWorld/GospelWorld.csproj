@@ -144,6 +144,9 @@
     <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.2\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
@@ -168,6 +171,12 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc.Extensions, Version=1.0.9.0, Culture=neutral, PublicKeyToken=17e35335fc9f8fc8, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Web.Mvc.Extensions.Mvc.4.1.0.9\lib\net40\System.Web.Mvc.Extensions.dll</HintPath>
@@ -274,9 +283,14 @@
     <Compile Include="App_Start\Ninject.Web.Common.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Atrributes\FileSizeAttribute.cs" />
     <Compile Include="Atrributes\FileTypesAttribute.cs" />
+    <Compile Include="ConfigModule.cs" />
+    <Compile Include="ConfigService.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Api\SermonApiController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
@@ -284,7 +298,7 @@
     <Compile Include="Controllers\SermonController.cs" />
     <Compile Include="Controllers\WorkerController.cs" />
     <Compile Include="Infrastructure\Binders.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Account1Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Entities\Attendance.cs" />
@@ -299,7 +313,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interface\IConfigService.cs" />
     <Compile Include="Interface\IDepartmentService.cs" />
+    <Compile Include="Interface\IEmailService.cs" />
     <Compile Include="Interface\IEventServices.cs" />
     <Compile Include="Interface\IMemberServices.cs" />
     <Compile Include="Interface\ISermonServices.cs" />
@@ -311,17 +327,17 @@
     <Compile Include="Managers\SermonCategoryServ.cs" />
     <Compile Include="Managers\SermonServices.cs" />
     <Compile Include="Managers\WorkerServices.cs" />
-    <Compile Include="Migrations\201905301432308_addAdmin.cs" />
-    <Compile Include="Migrations\201905301432308_addAdmin.Designer.cs">
-      <DependentUpon>201905301432308_addAdmin.cs</DependentUpon>
+    <Compile Include="Migrations\201906251426278_changeID.cs" />
+    <Compile Include="Migrations\201906251426278_changeID.Designer.cs">
+      <DependentUpon>201906251426278_changeID.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201906120957209_adupdate.cs" />
-    <Compile Include="Migrations\201906120957209_adupdate.Designer.cs">
-      <DependentUpon>201906120957209_adupdate.cs</DependentUpon>
+    <Compile Include="Migrations\201906251640289_goinghome.cs" />
+    <Compile Include="Migrations\201906251640289_goinghome.Designer.cs">
+      <DependentUpon>201906251640289_goinghome.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201906131050202_updatyeentity.cs" />
-    <Compile Include="Migrations\201906131050202_updatyeentity.Designer.cs">
-      <DependentUpon>201906131050202_updatyeentity.cs</DependentUpon>
+    <Compile Include="Migrations\201906251711415_EventType.cs" />
+    <Compile Include="Migrations\201906251711415_EventType.Designer.cs">
+      <DependentUpon>201906251711415_EventType.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -329,6 +345,7 @@
     <Compile Include="Models\DayModel.cs" />
     <Compile Include="Models\DepartmentModel.cs" />
     <Compile Include="Models\DeptListViewModel.cs" />
+    <Compile Include="Models\ElasticEmailService.cs" />
     <Compile Include="Models\EventListViewModel.cs" />
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\EventTypeListViewModel.cs" />
@@ -337,15 +354,23 @@
     <Compile Include="Models\Extension.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\MailService.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MemberModel.cs" />
+    <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\SermonCategoryModel.cs" />
     <Compile Include="Models\SermonCategoryViewModel.cs" />
     <Compile Include="Models\SermonIndexViewModel.cs" />
     <Compile Include="Models\SermonListViewModel.cs" />
     <Compile Include="Models\SermonModel.cs" />
+    <Compile Include="Models\User\ExternalRegisterViewModel.cs" />
+    <Compile Include="Models\User\RoleListViewModel.cs" />
+    <Compile Include="Models\User\RoleViewModel.cs" />
+    <Compile Include="Models\User\UserListViewModel.cs" />
+    <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Models\WorkerListViewModel.cs" />
+    <Compile Include="UserRepo.cs" />
     <Compile Include="ViewModel\SermonViewModel.cs" />
     <Compile Include="Models\UploadFiles.cs" />
     <Compile Include="Models\WorkerModel.cs" />
@@ -2253,8 +2278,8 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Login1.cshtml" />
+    <Content Include="Views\Account\Register1.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
@@ -2303,10 +2328,22 @@
     <Content Include="Views\Admin\AddDept.cshtml" />
     <Content Include="Views\Admin\DepartmentList.cshtml" />
     <Content Include="Views\Home\NatioalProgramme.cshtml" />
+    <Content Include="Views\Sermon\BibleTestss.cshtml" />
+    <Content Include="Views\Sermon\SermonDetails.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\CreateRole.cshtml" />
+    <Content Include="Views\Account\EditRole.cshtml" />
+    <Content Include="Views\Account\RoleList.cshtml" />
+    <Content Include="Views\Account\EditUser.cshtml" />
+    <Content Include="Views\Account\AddUser.cshtml" />
+    <Content Include="Views\Admin\UserList.cshtml" />
+    <Content Include="Views\Shared\SearchPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Member\" />
+    <Folder Include="Views\SermonApi\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -2326,14 +2363,14 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.2\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201905301432308_addAdmin.resx">
-      <DependentUpon>201905301432308_addAdmin.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906251426278_changeID.resx">
+      <DependentUpon>201906251426278_changeID.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906120957209_adupdate.resx">
-      <DependentUpon>201906120957209_adupdate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906251640289_goinghome.resx">
+      <DependentUpon>201906251640289_goinghome.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906131050202_updatyeentity.resx">
-      <DependentUpon>201906131050202_updatyeentity.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906251711415_EventType.resx">
+      <DependentUpon>201906251711415_EventType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

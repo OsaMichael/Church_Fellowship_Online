@@ -20,10 +20,11 @@ namespace GospelWorld.Managers
         {
             try
             {
-                var isExist = _context.Events.Where(x => x.EventName == model.EventName && x.EventTheme == model.EventTheme).FirstOrDefault();
+                var isExist = _context.Events.Where(x => x.EventId == model.EventId).FirstOrDefault();
                 if (isExist != null) throw new Exception("Event already exist");
 
                 var entity = model.Create(model);
+                _context.Events.Add(entity);
                 _context.SaveChanges();
 
             }

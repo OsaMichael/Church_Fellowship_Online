@@ -1,0 +1,15 @@
+﻿@model IEnumerable<GospelWorld.Models.ApplicationUser>
+
+
+
+    @if (Model != null)
+        {
+            foreach(var itm in Model)
+            {
+    <tr>
+        <td>@itm.UserName </td>
+        <td>@itm.PhoneNumber </td>
+        <td><a href="#"><i class="glyphicon glyphicon-eye-open"></i>View</a></td>
+    </tr>
+            }
+        }

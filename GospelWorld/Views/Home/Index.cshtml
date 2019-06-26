@@ -1,6 +1,4 @@
 ﻿
-
-
 @model GospelWorld.Models.HomeViewModel
 
 @{
@@ -8,10 +6,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <section class="hero-area">
     <div class="hero-slides owl-carousel">
 
-        @foreach (var item in Model.Events.OrderBy(item => item.Eventtype))
+
+        @foreach (var item in Model.Events)
         {
             <div class="single-hero-slide bg-img bg-overlay" style="background-image:url(@Url.Content("~/Content/images/")@item.EventImageThumbnailUrl);">
                 <div class="container h-100">
@@ -48,7 +48,7 @@
             <div class="col-12">
                 <div class="next-events-countdown cta-text d-flex justify-content-between align-items-center">
                     <h5>Next Event:</h5>
-                    @foreach (var events in Model.Events.OrderBy(i => i.EventDate))
+                    @foreach (var events in Model.Events)
                     {
                         if (events.EventDate >= DateTime.Now)
                         {
@@ -64,6 +64,8 @@
         </div>
     </div>
 </div>
+
+
 
 <section class="faith-about-area section-padding-100-0">
     <div class="container">
@@ -100,7 +102,7 @@
                     <div class="headline">
                         <h5>Upcoming Events</h5>
                     </div>
-                    @foreach (var item in Model.Events.OrderBy(item => item.EventDate))
+                    @foreach (var item in Model.Events)
                     {
                         if (item.EventDate >= DateTime.Now)
                         {
@@ -139,7 +141,7 @@
                     </div>
 
 
-                    @foreach (var item in Model.Sermons.OrderBy(s => s.SermonDate))
+                    @foreach (var item in Model.Sermons)
                     {
                         if (item.SermonDate <= DateTime.Now)
                         {
@@ -259,7 +261,7 @@
             <div class="col-12 col-lg-4">
                 <div class="single-blog-area mb-100">
 
-                    @foreach (var item in Model.Sermons.OrderBy(s => s.SermonDate))
+                    @foreach (var item in Model.Sermons)
                     {
                         if (item.SermonDate <= DateTime.Now)
                         {
@@ -309,3 +311,4 @@
     </div>
 </div>
 
+@*<a href="/Admin/index">Click >> admin page</a>*@

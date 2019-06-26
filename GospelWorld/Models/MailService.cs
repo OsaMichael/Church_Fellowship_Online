@@ -9,7 +9,7 @@ namespace GospelWorld.Models
     public class MailService
     {
         
-        private string _mailTo = "amichaelmusic10@gmail.com";
+        private string _mailTo = "evanmikeosa@yahoo.com";
         private string _mailFrom = "noreply@praiseassembly1.com";
 
         public void Send(string subject, string message)

@@ -1,10 +1,10 @@
-﻿
+﻿@using GospelWorld.Models
 @model GospelWorld.Models.SermonViewModel
+
 @{
     ViewBag.Title = "";
 
 }
-
 
 <div class="breadcumb-area bg-img" style="background-image: url(~/Content/img/bg-img/bg-6.jpg);">
     <div class="container h-100">
@@ -34,8 +34,6 @@
 
         <div class="row">
             <div class="col-12 col-lg-6 mb-100">
-
-
 
                 @foreach (var item in Model.SermonCategorss)
                 {
@@ -74,11 +72,11 @@
 
                             <div class="sermons-thumbnail bg-img">
                                 <img src="~/Content/img/blog-img/3.jpg" alt="">
-                                @*<img src="@Url.Content("~/Content/Images/")@sermon.ImageThumbnailUrl" alt="preacher :@sermon.PreacherName" />*@
+                                <img src="@Url.Content("~/Content/Images/")@sermon.ImageThumbnailUrl" alt="preacher :@sermon.PreacherName" />
                             </div>
 
                             <div class="sermons-text">
-                                <a href="@Url.Action("SermonDetails","Sermon", new { id = sermon.CatId } )">
+                                <a href="@Url.Action("SermonDetails","Sermon", new { id = sermon.SermId } )">
 
                                     <h6>@sermon.SermonTitle</h6>
                                 </a>
@@ -126,7 +124,7 @@
                     <img src="@Url.Content("~/Content/Images/")@sermon.ImageThumbnailUrl" alt="preacher :@sermon.PreacherName" />
                 </div>
                 <div class="sermons-text">
-                    <a href="@Url.Action("SermonDetails", "Sermon", new { id = sermon.CatId })">
+                    <a href="@Url.Action("SermonDetails", "Sermon", new { id = sermon.SermId })">
 
                         <h6>@sermon.SermonTitle</h6>
                     </a>
